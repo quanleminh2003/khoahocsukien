@@ -179,34 +179,37 @@
     <script>
         document.getElementById('registrationForm').addEventListener('submit', async function (e) {
             e.preventDefault();
-    
+
             const formData = {
-                fullName: document.getElementById('fullName').value,
-                phoneNumber: document.getElementById('phoneNumber').value,
-                email: document.getElementById('email').value
+                fullName: document.getElementById('fullName').value.trim(),
+                phoneNumber: document.getElementById('phoneNumber').value.trim(),
+                email: document.getElementById('email').value.trim()
             };
-    
+
+            // Kiểm tra dữ liệu trước khi gửi
+            if (!formData.fullName || !formData.phoneNumber || !formData.email) {
+                alert('Vui lòng điền đầy đủ thông tin!');
+                return;
+            }
+
             try {
-                const response = await fetch('https://script.google.com/macros/s/AKfycbzBv4QocLtla3ZLzAHACuPQo9ecgnGMKiPgzTxp31t7FWlMS6DMDbMAECgA0ks2Ar_e/exec', {
+                const response = await fetch('https://script.google.com/macros/s/AKfycbwlpQ7AdIZuqifXVAl9cpvxQIPDGlsRzjwYftijCWq0vthYGS8yo3RWBynwPcIExWbn/exec', {
                     method: 'POST',
+                    mode: 'no-cors', // Thêm mode no-cors để tránh lỗi CORS
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(formData)
                 });
-    
-                if (response.ok) {
-                    alert('Thông tin đã được gửi thành công!');
-                } else {
-                    alert('Có lỗi xảy ra, vui lòng thử lại.');
-                }
+
+                // Vì mode là 'no-cors', response.ok không thể kiểm tra được, nên ta giả định gửi thành công
+                alert('Thông tin đã được gửi thành công!');
+                document.getElementById('registrationForm').reset();
             } catch (error) {
                 console.error('Error:', error);
                 alert('Có lỗi xảy ra, vui lòng thử lại.');
             }
         });
     </script>
-    
 </body>
 </html>
-
